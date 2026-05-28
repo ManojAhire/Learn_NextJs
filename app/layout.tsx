@@ -16,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 })
 
-const SITE_URL = 'https://nextjs-notes.vercel.app'
+const SITE_URL = 'https://nextjs-notes-hazel.vercel.app'
 const SITE_NAME = 'NextJS Notes'
 const TITLE = 'NextJS Notes — Learn Next.js Visually'
 const DESCRIPTION =

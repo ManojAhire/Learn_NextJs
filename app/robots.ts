@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
     ],
-    sitemap: 'https://nextjs-notes.vercel.app/sitemap.xml',
-    host: 'https://nextjs-notes.vercel.app',
+    sitemap: 'https://nextjs-notes-hazel.vercel.app/sitemap.xml',
+    host: 'https://nextjs-notes-hazel.vercel.app',
   }
 }
