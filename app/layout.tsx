@@ -82,9 +82,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
-  verification: {
-    google: 'EnOkm6nczwsrOwiK_CSyEFvwzeZG3q_ZgRN-N_zrlB0',
-  },
 }
 
 const jsonLd = {
@@ -150,6 +147,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
+        <meta name="google-site-verification" content="EnOkm6nczwsrOwiK_CSyEFvwzeZG3q_ZgRN-N_zrlB0" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
