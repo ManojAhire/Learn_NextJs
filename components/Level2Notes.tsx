@@ -41,318 +41,117 @@ const MOCK_PRODUCTS = [
   { id: 3, name: 'Ergonomic Desk Chair', price: '$299' }
 ]
 
-const USER_PAGE_CODE = [
-  "import UserDirectory from '@/components/UserDirectory';",
-  "import type { Metadata } from 'next';",
+const STEP_4_CODE = [
+  "export default function Page() {",
+  "  return (",
+  "    <div>",
+  "      <h1>User Directory</h1>",
+  "    </div>",
+  "  );",
+  "}"
+].join('\n');
+
+const STEP_6_CODE = [
+  "const response = await fetch(",
+  "  \"https://jsonplaceholder.typicode.com/users\"",
+  ");",
   "",
-  "// 1. Define Strict TypeScript types for upstream API payloads",
-  "export interface User {",
-  "  id: number;",
-  "  name: string;",
-  "  email: string;",
-  "  phone: string;",
-  "  website: string;",
-  "  company: {",
-  "    name: string;",
-  "    catchPhrase: string;",
-  "  };",
-  "  address: {",
-  "    street: string;",
-  "    city: string;",
-  "  };",
-  "}",
+  "const users = await response.json();"
+].join('\n');
+
+const STEP_7_CODE = [
+  "{users.map((user) => (",
+  "  <div key={user.id}>{user.name}</div>",
+  "))}"
+].join('\n');
+
+const STEP_8_CODE = [
+  "\"use client\";",
   "",
-  "// 2. Production-Grade Search Engine Optimization (SEO) Metadata",
-  "export const metadata: Metadata = {",
-  "  title: 'Active Directory | Learn NextJS',",
-  "  description: 'Search, browse, and filter profiles securely compiled via SSR data hooks.',",
-  "};",
+  "export default function Search() {",
+  "  return <div>Search Component</div>;",
+  "}"
+].join('\n');
+
+const STEP_9_CODE = [
+  "<Search users={users}/>"
+].join('\n');
+
+const STEP_10_CODE = [
+  "import { useState } from \"react\";",
   "",
-  "// 3. Fetching raw database or external APIs directly in Server Component",
-  "async function fetchUsers(): Promise<User[]> {",
-  "  // Configured with ISR: revalidate cache once every hour (3600 seconds)",
-  "  const res = await fetch('https://jsonplaceholder.typicode.com/users', {",
-  "    next: { revalidate: 3600 }",
-  "  });",
+  "// Inside Search component:",
+  "const [query, setQuery] = useState(\"\");"
+].join('\n');
+
+const STEP_11_CODE = [
+  "<input ",
+  "  type=\"text\" ",
+  "  value={query} ",
+  "  onChange={(e) => setQuery(e.target.value)} ",
+  "/>"
+].join('\n');
+
+const STEP_12_CODE = [
+  "const filteredUsers = users.filter(user => ",
+  "  user.name.toLowerCase().includes(query.toLowerCase())",
+  ");"
+].join('\n');
+
+const STEP_13_CODE = [
+  "\"use client\";",
   "",
-  "  if (!res.ok) {",
-  "    // Next.js automatically redirects to the closest error.tsx boundary",
-  "    throw new Error('Failed to retrieve user directory database payload');",
-  "  }",
+  "import { useState } from \"react\";",
   "",
-  "  return res.json();",
-  "}",
+  "export default function Counter() {",
+  "  const [count, setCount] = useState(0);",
+  "  return (",
+  "    <div>",
+  "      <p>Counter: {count}</p>",
+  "      <button onClick={() => setCount(count + 1)}>[+]</button>",
+  "    </div>",
+  "  );",
+  "}"
+].join('\n');
+
+const STEP_14_CODE = [
+  "import Counter from \"@/components/Counter\";",
   "",
-  "export default async function UsersPage() {",
+  "// Inside page.js return statement:",
+  "<Counter />"
+].join('\n');
+
+const STEP_15_CODE = [
+  "const [isOpen, setIsOpen] = useState(false);",
+  "",
+  "// Button: Open",
+  "// State: false -> true",
+  "// Show: Hello Modal"
+].join('\n');
+
+const STEP_16_CODE = [
+  "const [theme, setTheme] = useState(\"dark\"); // State: Dark / Light",
+  "// Store theme preference in browser storage",
+  "localStorage.setItem(\"theme\", theme);"
+].join('\n');
+
+const STEP_17_CODE = [
+  "useEffect(() => {",
+  "  const localTheme = localStorage.getItem(\"theme\");",
+  "  if (localTheme) setTheme(localTheme);",
+  "}, []);"
+].join('\n');
+
+const STEP_18_CODE = [
+  "export default async function Page() {",
   "  const users = await fetchUsers();",
-  "",
   "  return (",
-  "    <main className=\"min-h-screen bg-[#080816] py-12 px-4 sm:px-6 lg:px-8 text-slate-200\">",
-  "      <div className=\"max-w-6xl mx-auto\">",
-  "        <header className=\"mb-10 text-center sm:text-left border-b border-slate-900 pb-6\">",
-  "          <h1 className=\"text-3xl font-extrabold text-white tracking-tight\">",
-  "            User Profiles",
-  "          </h1>",
-  "          <p className=\"text-sm text-slate-400 mt-2\">",
-  "            Fetches 10 items directly on the server, with localized sorting on the client.",
-  "          </p>",
-  "        </header>",
-  "",
-  "        {/* 4. Pass serializable payload down to the Client Component */}",
-  "        <UserDirectory initialUsers={users} />",
-  "      </div>",
-  "    </main>",
-  "  );",
-  "}"
-].join('\n');
-
-const USER_LOADING_CODE = [
-  "// Industry Best Practice: Shimmering skeleton loader for optimal page speed (CLS protection)",
-  "export default function UsersLoading() {",
-  "  return (",
-  "    <div className=\"min-h-screen bg-[#080816] py-12 px-6\">",
-  "      <div className=\"max-w-6xl mx-auto animate-pulse\">",
-  "        <div className=\"h-9 w-48 bg-slate-900 border border-slate-850 rounded-lg mb-3\" />",
-  "        <div className=\"h-4 w-72 bg-slate-950 border border-slate-900 rounded-md mb-10\" />",
-  "",
-  "        {/* Grid Skeletons */}",
-  "        <div className=\"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6\">",
-  "          {Array.from({ length: 6 }).map((_, i) => (",
-  "            <div ",
-  "              key={i} ",
-  "              className=\"bg-slate-950/40 border border-slate-900 p-6 rounded-2xl flex flex-col gap-5\"",
-  "            >",
-  "              <div className=\"flex gap-4 items-center\">",
-  "                <div className=\"w-12 h-12 rounded-full bg-slate-900 border border-slate-850\" />",
-  "                <div className=\"flex-1 flex flex-col gap-2\">",
-  "                  <div className=\"h-4 bg-slate-900 border border-slate-850 rounded w-3/4\" />",
-  "                  <div className=\"h-3 bg-slate-950 border border-slate-900 rounded w-1/2\" />",
-  "                </div>",
-  "              </div>",
-  "              <div className=\"border-t border-slate-900 pt-4 flex flex-col gap-2.5\">",
-  "                <div className=\"h-3 bg-slate-950 border border-slate-900 rounded w-full\" />",
-  "                <div className=\"h-3 bg-slate-950 border border-slate-900 rounded w-5/6\" />",
-  "              </div>",
-  "            </div>",
-  "          ))}",
-  "        </div>",
-  "      </div>",
-  "    </div>",
-  "  );",
-  "}"
-].join('\n');
-
-const USER_DIRECTORY_CODE = [
-  "\"use client\";",
-  "",
-  "import { useState, useEffect } from 'react';",
-  "import type { User } from '@/app/users/page';",
-  "import UserModal from './UserModal';",
-  "",
-  "interface UserDirectoryProps {",
-  "  initialUsers: User[];",
-  "}",
-  "",
-  "export default function UserDirectory({ initialUsers }: UserDirectoryProps) {",
-  "  const [searchQuery, setSearchQuery] = useState('');",
-  "  const [likes, setLikes] = useState(0);",
-  "  const [selectedUser, setSelectedUser] = useState<User | null>(null);",
-  "",
-  "  // 1. Theme state: initialized to static default to prevent Server/Client initial render mismatch",
-  "  const [theme, setTheme] = useState<'dark' | 'light'>('dark');",
-  "  const [isLoaded, setIsLoaded] = useState(false);",
-  "",
-  "  // 2. Safely read browser APIs in useEffect after page hydration completes",
-  "  useEffect(() => {",
-  "    const savedTheme = localStorage.getItem('users_directory_theme') as 'dark' | 'light';",
-  "    if (savedTheme) {",
-  "      setTheme(savedTheme);",
-  "    }",
-  "    const savedLikes = localStorage.getItem('users_directory_likes');",
-  "    if (savedLikes) {",
-  "      setLikes(parseInt(savedLikes, 10) || 0);",
-  "    }",
-  "    setIsLoaded(true);",
-  "  }, []);",
-  "",
-  "  // 3. Write updates back to local storage inside interaction functions",
-  "  const toggleTheme = () => {",
-  "    const nextTheme = theme === 'dark' ? 'light' : 'dark';",
-  "    setTheme(nextTheme);",
-  "    localStorage.setItem('users_directory_theme', nextTheme);",
-  "  };",
-  "",
-  "  const incrementLikes = () => {",
-  "    const nextLikes = likes + 1;",
-  "    setLikes(nextLikes);",
-  "    localStorage.setItem('users_directory_likes', String(nextLikes));",
-  "  };",
-  "",
-  "  // 4. Dynamic Client-Side filter based on query state",
-  "  const filteredUsers = initialUsers.filter((user) =>",
-  "    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||",
-  "    user.company.name.toLowerCase().includes(searchQuery.toLowerCase())",
-  "  );",
-  "",
-  "  return (",
-  "    <div className={`p-6 rounded-3xl border transition-all duration-300 ${",
-  "      theme === 'light' ",
-  "        ? 'bg-slate-50 border-slate-200 text-slate-900' ",
-  "        : 'bg-slate-950/40 border-slate-900 text-slate-200'",
-  "    }`}>",
-  "      ",
-  "      {/* Search Bar & Interactive Controllers */}",
-  "      <div className=\"flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 mb-8\">",
-  "        <div className=\"flex-1\">",
-  "          <input",
-  "            type=\"text\"",
-  "            placeholder=\"🔍 Search profiles by name or company...\"",
-  "            value={searchQuery}",
-  "            onChange={(e) => setSearchQuery(e.target.value)}",
-  "            className={`w-full px-4 py-2.5 rounded-xl border text-xs focus:outline-none transition ${",
-  "              theme === 'light'",
-  "                ? 'bg-white border-slate-300 text-slate-900 focus:border-indigo-500'",
-  "                : 'bg-slate-900/60 border-slate-800 text-white focus:border-indigo-500'",
-  "            }`}",
-  "          />",
-  "        </div>",
-  "",
-  "        <div className=\"flex gap-2\">",
-  "          <button",
-  "            onClick={incrementLikes}",
-  "            className=\"flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-[11px] font-bold transition shadow-lg shadow-rose-500/10\"",
-  "          >",
-  "            ❤️ Likes: {likes}",
-  "          </button>",
-  "",
-  "          <button",
-  "            onClick={toggleTheme}",
-  "            className={`px-4 py-2.5 rounded-xl text-[11px] font-bold border transition ${",
-  "              theme === 'light'",
-  "                ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-800'",
-  "                : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-white'",
-  "            }`}",
-  "          >",
-  "            {isLoaded ? (theme === 'light' ? '🌙 Dark Theme' : '☀️ Light Theme') : '⏳'}",
-  "          </button>",
-  "        </div>",
-  "      </div>",
-  "",
-  "      {/* Profile Cards Layout */}",
-  "      <div className=\"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6\">",
-  "        {filteredUsers.length > 0 ? (",
-  "          filteredUsers.map((user) => (",
-  "            <div",
-  "              key={user.id}",
-  "              onClick={() => setSelectedUser(user)}",
-  "              className={`p-5 rounded-2xl border cursor-pointer transition transform hover:-translate-y-1 hover:shadow-lg flex flex-col justify-between ${",
-  "                theme === 'light'",
-  "                  ? 'bg-white border-slate-200 hover:border-slate-300'",
-  "                  : 'bg-slate-900 border-slate-850 hover:border-slate-800'",
-  "              }`}",
-  "            >",
-  "              <div>",
-  "                <h3 className=\"font-bold text-xs text-white\">{user.name}</h3>",
-  "                <p className=\"text-[10px] text-slate-400 mt-1\">{user.email}</p>",
-  "              </div>",
-  "              <div className=\"mt-4 flex items-center justify-between border-t border-slate-850/30 pt-3\">",
-  "                <span className=\"text-[9px] uppercase font-bold text-indigo-400\">",
-  "                  🏢 {user.company.name}",
-  "                </span>",
-  "                <span className=\"text-[9px] text-slate-500 font-mono\">",
-  "                  {user.address.city}",
-  "                </span>",
-  "              </div>",
-  "            </div>",
-  "          ))",
-  "        ) : (",
-  "          <div className=\"col-span-full text-center text-xs text-slate-500 py-10 font-mono\">",
-  "            No matching users found for \"{searchQuery}\"",
-  "          </div>",
-  "        )}",
-  "      </div>",
-  "",
-  "      {/* Selected profile detailed portal modal */}",
-  "      {selectedUser && (",
-  "        <UserModal ",
-  "          user={selectedUser} ",
-  "          onClose={() => setSelectedUser(null)} ",
-  "          theme={theme}",
-  "        />",
-  "      )}",
-  "    </div>",
-  "  );",
-  "}"
-].join('\n');
-
-const USER_MODAL_CODE = [
-  "\"use client\";",
-  "",
-  "import type { User } from '@/app/users/page';",
-  "",
-  "interface UserModalProps {",
-  "  user: User;",
-  "  onClose: () => void;",
-  "  theme: 'dark' | 'light';",
-  "}",
-  "",
-  "export default function UserModal({ user, onClose, theme }: UserModalProps) {",
-  "  return (",
-  "    <div ",
-  "      className=\"fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in\"",
-  "      onClick={onClose}",
-  "    >",
-  "      <div ",
-  "        className={`w-full max-w-sm p-6 rounded-2xl border shadow-2xl relative animate-slide-up ${",
-  "          theme === 'light'",
-  "            ? 'bg-white border-slate-200 text-slate-900 shadow-slate-200/50'",
-  "            : 'bg-slate-900 border-slate-800 text-slate-100 shadow-slate-950/70'",
-  "        }`}",
-  "        onClick={(e) => e.stopPropagation()}",
-  "      >",
-  "        <button ",
-  "          onClick={onClose}",
-  "          className=\"absolute top-4 right-4 text-slate-400 hover:text-slate-200 font-bold transition text-base\"",
-  "        >",
-  "          ×",
-  "        </button>",
-  "",
-  "        <div className=\"flex gap-4 items-center mb-6\">",
-  "          <div className=\"w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white text-lg font-bold\">",
-  "            {user.name.charAt(0)}",
-  "          </div>",
-  "          <div>",
-  "            <h2 className=\"font-extrabold text-sm text-white\">{user.name}</h2>",
-  "            <p className=\"text-[10px] text-slate-400\">{user.email}</p>",
-  "          </div>",
-  "        </div>",
-  "",
-  "        <div className=\"border-t border-slate-850/30 pt-4 flex flex-col gap-3 text-xs font-mono\">",
-  "          <div className=\"flex justify-between border-b border-slate-850/20 pb-2\">",
-  "            <span className=\"text-slate-500 font-bold uppercase\">Phone:</span>",
-  "            <span className=\"text-slate-300\">{user.phone}</span>",
-  "          </div>",
-  "          <div className=\"flex justify-between border-b border-slate-850/20 pb-2\">",
-  "            <span className=\"text-slate-500 font-bold uppercase\">Website:</span>",
-  "            <a ",
-  "              href={\`https://\${user.website}\`}",
-  "              target=\"_blank\" ",
-  "              rel=\"noopener noreferrer\"",
-  "              className=\"text-indigo-400 hover:underline\"",
-  "            >",
-  "              {user.website}",
-  "            </a>",
-  "          </div>",
-  "          <div className=\"flex justify-between border-b border-slate-850/20 pb-2\">",
-  "            <span className=\"text-slate-500 font-bold uppercase\">Company:</span>",
-  "            <span className=\"text-slate-300\">{user.company.name}</span>",
-  "          </div>",
-  "          <div className=\"flex justify-between pb-1\">",
-  "            <span className=\"text-slate-500 font-bold uppercase\">Address:</span>",
-  "            <span className=\"text-slate-300 text-right\">{user.address.street}, {user.address.city}</span>",
-  "          </div>",
-  "        </div>",
-  "      </div>",
+  "    <div>",
+  "      <h1>User Directory</h1>",
+  "      <Search users={users} />",
+  "      <Counter />",
+  "      <Modal />",
+  "      <ThemeToggle />",
   "    </div>",
   "  );",
   "}"
@@ -1243,275 +1042,479 @@ export default function ClientWrapper({ children }) {
       {/* ── MODULE 6: PRACTICAL PROJECT ── */}
       <section className="section fi vis" id="project-m6" aria-label="Module 6: Practical Project">
         <div className="sec-num">Module 6 · Practical Project</div>
-        <h2 className="sec-title">18. Build User Directory Project</h2>
-        <p className="sec-sub">
-          Instead of just reviewing a simulation, build a **production-grade, industrial-ready User Directory application** in your workspace! Below is the exact file structure, complete clean TypeScript code, and deployment guidance needed to launch it on Vercel.
+
+        <div className="bg-gradient-to-r from-purple-950/20 to-cyan-950/20 border border-purple-900/30 rounded-xl p-5 mb-8">
+          <p className="text-xs md:text-sm text-slate-200 font-medium leading-relaxed">
+            Absolutely. In fact, I think this is a much better approach than reading notes for weeks.<br />
+            For <strong>Level 2</strong>, we'll build one project that gradually introduces every concept.
+          </p>
+        </div>
+
+        <h2 className="sec-title text-2xl font-bold text-white mb-2">Project: User Directory</h2>
+        <p className="text-xs text-slate-400 font-mono mb-4">
+          By the end, you'll have learned:
         </p>
 
-        {/* Project Guide Tabs Selector */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        {/* Skills learned grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
           {[
-            { id: 'structure', label: '📁 Folder Structure', desc: 'Component mapping' },
-            { id: 'page', label: '📄 app/users/page.tsx', desc: 'Server fetch & SEO' },
-            { id: 'loading', label: '📄 app/users/loading.tsx', desc: 'UX skeleton fallback' },
-            { id: 'directory', label: '📄 components/UserDirectory.tsx', desc: 'Client interactive shell' },
-            { id: 'modal', label: '📄 components/UserModal.tsx', desc: 'Client portal overlay' },
-            { id: 'production', label: '⚡ Production Readiness', desc: 'Vercel launch checklist' }
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setProjectGuideTab(tab.id as any)}
-              className={`flex-1 min-w-[155px] p-2.5 rounded-xl border text-left transition-all ${
-                projectGuideTab === tab.id
-                  ? 'bg-indigo-500/10 border-indigo-500 text-indigo-400 font-bold shadow-md shadow-indigo-500/5'
-                  : 'bg-slate-900/40 border-slate-800 text-slate-400 hover:bg-slate-800/80 hover:text-white'
-              }`}
-            >
-              <div className="text-xs font-semibold">{tab.label}</div>
-              <div className="text-[9px] font-mono text-slate-500 mt-0.5">{tab.desc}</div>
-            </button>
+            'Server Components', 'Async Components', 'Data Fetching', 'Client Components',
+            'useState', 'useEffect', 'Event Handlers', 'Props',
+            'Server → Client Flow', 'Search', 'Counter', 'Modal', 'Theme Toggle'
+          ].map((item, idx) => (
+            <div key={idx} className="bg-slate-900/60 border border-slate-850 p-2 rounded flex items-center gap-2">
+              <span className="text-emerald-400 font-bold text-xs">✓</span>
+              <span className="text-xs font-mono text-slate-300">{item}</span>
+            </div>
           ))}
         </div>
 
-        {/* Interactive Tab Panels */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 mb-4">
-          
-          {/* TAB 1: STRUCTURE */}
-          {projectGuideTab === 'structure' && (
-            <div className="flex flex-col gap-4">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">📁 Directory & File Architecture</h3>
-              <p className="text-xs text-slate-300">
-                To build this project, create the following directories and files under your <code>nextjs-notes/</code> project folder. Notice the strict separation of concerns between server-only fetching and browser-only rendering:
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
-                <div className="md:col-span-5">
-                  <div className="file-tree">
-                    <div className="ft-head font-bold">📂 Target Project Tree</div>
-                    <div className="ft-line pointer-events-none">
-                      <span className="ft-icon">📁</span>
-                      <span className="ft-name ft-folder font-bold">nextjs-notes/</span>
-                    </div>
-                    <div className="ft-indent">
-                      <div className="ft-line pointer-events-none">
-                        <span className="ft-icon">📁</span>
-                        <span className="ft-name ft-folder font-bold">app/</span>
-                      </div>
-                      <div className="ft-indent">
-                        <div className="ft-line pointer-events-none text-emerald-400 font-semibold">
-                          <span className="ft-icon">📁</span>
-                          <span className="ft-name">users/</span>
-                          <span className="ft-rbadge">NEW ROUTE</span>
-                        </div>
-                        <div className="ft-indent text-emerald-400">
-                          <div className="ft-line pointer-events-none">
-                            <span className="ft-icon">📄</span>
-                            <span className="ft-name font-mono">loading.tsx</span>
-                            <span className="ft-rbadge bg-purple-500/20 text-purple-300">Server</span>
-                          </div>
-                          <div className="ft-line pointer-events-none">
-                            <span className="ft-icon">📄</span>
-                            <span className="ft-name font-mono">page.tsx</span>
-                            <span className="ft-rbadge bg-purple-500/20 text-purple-300">Server</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="ft-line pointer-events-none">
-                        <span className="ft-icon">📁</span>
-                        <span className="ft-name ft-folder font-bold">components/</span>
-                      </div>
-                      <div className="ft-indent text-emerald-400">
-                        <div className="ft-line pointer-events-none">
-                          <span className="ft-icon">📄</span>
-                          <span className="ft-name font-mono">UserDirectory.tsx</span>
-                          <span className="ft-rbadge bg-cyan-500/20 text-cyan-300">Client</span>
-                        </div>
-                        <div className="ft-line pointer-events-none">
-                          <span className="ft-icon">📄</span>
-                          <span className="ft-name font-mono">UserModal.tsx</span>
-                          <span className="ft-rbadge bg-cyan-500/20 text-cyan-300">Client</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="md:col-span-7 bg-slate-950 p-4 rounded-xl border border-slate-850 flex flex-col gap-3">
-                  <div className="flex gap-2 items-center">
-                    <span className="text-[10px] font-bold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded uppercase">Server Environment</span>
-                    <span className="text-slate-500 text-xs font-mono">&rarr;</span>
-                    <span className="text-[10px] font-bold bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded uppercase">Client Environment</span>
-                  </div>
-                  <div className="text-xs text-slate-300 leading-relaxed flex flex-col gap-2">
-                    <p>
-                      <strong>1. Server Component (`page.tsx`)</strong> fetches user data directly on the backend. This means the client browser downloads zero data-fetching packages, secure credentials remain hidden, and initial paint is instant.
-                    </p>
-                    <p>
-                      <strong>2. Loading Shell (`loading.tsx`)</strong> automatically intercepts the asynchronous data-fetch stream. React displays the skeleton layout instantly while the fetch completes.
-                    </p>
-                    <p>
-                      <strong>3. Client Components (`UserDirectory.tsx`, `UserModal.tsx`)</strong> are imported by the server component. They hydrate inside the browser to bind search state, theme toggles, and modal handlers.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 2: PAGE */}
-          {projectGuideTab === 'page' && (
-            <div className="flex flex-col gap-3">
-              <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">📄 app/users/page.tsx</h3>
-                <span className="text-[9px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded font-bold uppercase">Server Component</span>
-              </div>
-              <p className="text-xs text-slate-300">
-                Create this file to handle secure Server-Side Rendering (SSR), Incremental Static Revalidation (ISR), and dynamic search engine optimization (SEO):
-              </p>
-              
-              <div className="code-wrap m-0">
-                <div className="code-head">
-                  <div className="c-dots"><div className="c-dot" style={{background:'#28c840'}}/></div>
-                  <span className="c-file">nextjs-notes/app/users/page.tsx</span>
-                </div>
-                <pre className="text-[11px] p-3 text-slate-200 overflow-y-auto max-h-[350px]">
-                  <code>{USER_PAGE_CODE}</code>
-                </pre>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 3: LOADING */}
-          {projectGuideTab === 'loading' && (
-            <div className="flex flex-col gap-3">
-              <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">📄 app/users/loading.tsx</h3>
-                <span className="text-[9px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded font-bold uppercase">Server-Side Loading Fallback</span>
-              </div>
-              <p className="text-xs text-slate-300">
-                This file provides a beautiful **skeleton layout** that React displays instantly while the async `fetchUsers` stream is resolving, preventing layout shifts (CLS):
-              </p>
-              
-              <div className="code-wrap m-0">
-                <div className="code-head">
-                  <div className="c-dots"><div className="c-dot" style={{background:'#28c840'}}/></div>
-                  <span className="c-file">nextjs-notes/app/users/loading.tsx</span>
-                </div>
-                <pre className="text-[11px] p-3 text-slate-200 overflow-y-auto max-h-[350px]">
-                  <code>{USER_LOADING_CODE}</code>
-                </pre>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 4: DIRECTORY */}
-          {projectGuideTab === 'directory' && (
-            <div className="flex flex-col gap-3">
-              <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">📄 components/UserDirectory.tsx</h3>
-                <span className="text-[9px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded font-bold uppercase">Client Component</span>
-              </div>
-              <p className="text-xs text-slate-300">
-                This handles client-side interaction: typing search queries, managing profile likes, and persistent themes. Notice how `localStorage` is safely initialized inside `useEffect` to completely prevent hydration errors:
-              </p>
-              
-              <div className="code-wrap m-0">
-                <div className="code-head">
-                  <div className="c-dots"><div className="c-dot" style={{background:'#28c840'}}/></div>
-                  <span className="c-file">nextjs-notes/components/UserDirectory.tsx</span>
-                </div>
-                <pre className="text-[11px] p-3 text-slate-200 overflow-y-auto max-h-[350px]">
-                  <code>{USER_DIRECTORY_CODE}</code>
-                </pre>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 5: MODAL */}
-          {projectGuideTab === 'modal' && (
-            <div className="flex flex-col gap-3">
-              <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider font-mono">📄 components/UserModal.tsx</h3>
-                <span className="text-[9px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded font-bold uppercase">Client Component</span>
-              </div>
-              <p className="text-xs text-slate-300">
-                Displays the detailed overlay popup when clicking a card. Complete with smooth animation transitions:
-              </p>
-              
-              <div className="code-wrap m-0">
-                <div className="code-head">
-                  <div className="c-dots"><div className="c-dot" style={{background:'#28c840'}}/></div>
-                  <span className="c-file">nextjs-notes/components/UserModal.tsx</span>
-                </div>
-                <pre className="text-[11px] p-3 text-slate-200 overflow-y-auto max-h-[350px]">
-                  <code>{USER_MODAL_CODE}</code>
-                </pre>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 6: PRODUCTION */}
-          {projectGuideTab === 'production' && (
-            <div className="flex flex-col gap-4">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">⚡ Industrial Vercel Deployment Checklist</h3>
-              <p className="text-xs text-slate-300">
-                To launch a high-performance Next.js application ready for professional portfolio review, make sure you configure these five pillars:
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                
-                <div className="bg-slate-950 p-4 border border-slate-850 rounded-xl flex flex-col gap-2">
-                  <span className="font-bold text-white flex items-center gap-1.5 text-xs">
-                    📁 1. Secure Environment Scoping
-                  </span>
-                  <span className="text-slate-400 leading-relaxed">
-                    Hide sensitive client API targets or Mongo strings inside your system env keys. Reference variables with <code>process.env.DB_URI</code> inside **Server Components** only. Never use `NEXT_PUBLIC_` prefixes on security-sensitive values as it compiles them directly into public browser bundles.
-                  </span>
-                </div>
-
-                <div className="bg-slate-950 p-4 border border-slate-850 rounded-xl flex flex-col gap-2">
-                  <span className="font-bold text-white flex items-center gap-1.5 text-xs">
-                    💧 2. Hydration Exception Isolation
-                  </span>
-                  <span className="text-slate-400 leading-relaxed">
-                    Never invoke browser-specific configurations like <code>window</code>, <code>localStorage</code>, or user locales during component state initialization. Instead, load them inside a post-hydration <code>useEffect</code> hook. This guarantees the browser and server initial render markup match exactly.
-                  </span>
-                </div>
-
-                <div className="bg-slate-950 p-4 border border-slate-850 rounded-xl flex flex-col gap-2">
-                  <span className="font-bold text-white flex items-center gap-1.5 text-xs">
-                    ⚡ 3. Incremental Static Revalidation (ISR)
-                  </span>
-                  <span className="text-slate-400 leading-relaxed">
-                    Set a revalidation frequency (e.g. <code>next: &#123; revalidate: 3600 &#125;</code>) inside your server fetch triggers. This compiles active routes to static files during builds, and background-updates them periodically. Your server loads pages instantly without hitting database rate-limits.
-                  </span>
-                </div>
-
-                <div className="bg-slate-950 p-4 border border-slate-850 rounded-xl flex flex-col gap-2">
-                  <span className="font-bold text-white flex items-center gap-1.5 text-xs">
-                    🏗️ 4. Layout Stability (CLS Protection)
-                  </span>
-                  <span className="text-slate-400 leading-relaxed">
-                    Use Next.js <code>loading.tsx</code> skeletons to occupy screen regions before dynamic values resolve. This stabilizes visual dimensions, reducing layout shift scores to near zero. Portfolios with good CLS metrics immediately signal mid/senior-level experience.
-                  </span>
-                </div>
-
-              </div>
-
-              <div className="bg-slate-950 p-4 border border-slate-850 rounded-xl flex flex-col gap-2">
-                <span className="font-bold text-white text-xs">🚀 Launching on Vercel:</span>
-                <ol className="list-decimal pl-4 text-slate-400 flex flex-col gap-1.5 mt-1 leading-relaxed">
-                  <li>Push your repository commits to GitHub (e.g. <code>git push origin main</code>).</li>
-                  <li>Log into [Vercel](https://vercel.com) and click **"Add New Project"**.</li>
-                  <li>Import your Next.js notes repository. Vercel automatically detects Next.js configurations.</li>
-                  <li>Configure your Environment variables (if any) and click **"Deploy"**.</li>
-                  <li>Vercel spins up an optimized production build, handles routing headers automatically, and delivers your site via a global edge CDN.</li>
-                </ol>
-              </div>
-            </div>
-          )}
-
+        <div className="bg-slate-900/40 border border-slate-850 rounded-xl p-4 mb-8 text-center text-xs text-slate-400 italic">
+          "We'll build it like an instructor would, not by dumping code."
         </div>
+
+        {/* Final Website Mockup */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mb-8">
+          <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3">🖥️ Final Website</h4>
+          <pre className="bg-slate-950 border border-slate-850 rounded-lg p-4 font-mono text-[11px] text-cyan-300 leading-normal overflow-x-auto">
+{`--------------------------------
+
+          User Directory
+
+Search: ___________
+
+------------------------
+
+Leanne Graham
+
+Ervin Howell
+
+Clementine Bauch
+
+...
+
+------------------------
+
+Counter: 0
+
+[+]
+
+------------------------
+
+[Open Modal]
+
+------------------------
+
+Dark Mode Toggle
+
+--------------------------------`}
+          </pre>
+        </div>
+
+        {/* Project Architecture */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mb-8">
+          <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">📐 Project Architecture</h4>
+          
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch">
+            {/* Folder tree */}
+            <div className="md:col-span-5 bg-slate-950 p-4 rounded-lg border border-slate-850 flex flex-col justify-center">
+              <span className="text-[10px] font-mono text-slate-500 font-bold block mb-2">FILE SYSTEM MAP</span>
+              <pre className="font-mono text-[11px] text-slate-300 leading-normal m-0">
+{`src/
+
+app/
+
+├── layout.js
+
+├── globals.css
+
+└── page.js
+
+components/
+
+├── Search.jsx
+
+├── Counter.jsx
+
+├── Modal.jsx
+
+└── ThemeToggle.jsx`}
+              </pre>
+            </div>
+
+            {/* Data flow */}
+            <div className="md:col-span-7 bg-slate-950 p-4 rounded-lg border border-slate-850 flex flex-col justify-center">
+              <span className="text-[10px] font-mono text-slate-500 font-bold block mb-3">DATA FLOW DIAGRAM</span>
+              <div className="flex flex-col gap-1 font-mono text-xs">
+                <div className="bg-purple-500/10 border border-purple-500/25 p-2 rounded text-purple-300 text-center font-bold text-[11px]">
+                  page.js
+                </div>
+                <div className="text-slate-500 text-center text-[10px] my-0.5">&darr; Server Component</div>
+                <div className="bg-amber-500/10 border border-amber-500/25 p-2 rounded text-amber-300 text-center font-bold text-[11px]">
+                  Fetch users
+                </div>
+                <div className="text-slate-500 text-center text-[10px] my-0.5">&darr; Pass data</div>
+                <div className="bg-cyan-500/10 border border-cyan-500/25 p-2 rounded text-cyan-300 text-center font-bold text-[11px]">
+                  Client Components
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Step-by-Step Curriculum */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mb-8">
+          <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-6">🛠️ Step-by-Step Tutorial</h4>
+          
+          <div className="flex flex-col gap-6">
+            
+            {/* Step 1 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 1</span>
+              <h5 className="text-sm font-bold text-white">Create Project</h5>
+              <pre className="bg-slate-950 p-2.5 rounded text-xs text-indigo-300 font-mono">npx create-next-app@latest</pre>
+              <p className="text-xs text-slate-400 font-mono">Choose:</p>
+              <pre className="bg-slate-950 p-2.5 rounded text-[11px] text-slate-400 font-mono leading-relaxed">
+{`TypeScript: No
+
+ESLint: Yes
+
+Tailwind: Yes
+
+src/: Yes
+
+App Router: Yes`}
+              </pre>
+              <p className="text-xs text-slate-400">Run:</p>
+              <pre className="bg-slate-950 p-2 rounded text-xs text-slate-300 font-mono">npm run dev</pre>
+            </div>
+
+            {/* Step 2 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 2</span>
+              <h5 className="text-sm font-bold text-white">Understand current structure</h5>
+              <p className="text-xs text-slate-400">Explore the default project folder setup:</p>
+              <pre className="bg-slate-950 p-3 rounded text-[11px] text-slate-300 font-mono leading-relaxed">
+{`src/
+
+app/
+
+layout.js
+
+page.js
+
+globals.css`}
+              </pre>
+              <p className="text-xs text-slate-400 italic">Ignore everything else.</p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 3</span>
+              <h5 className="text-sm font-bold text-white">Create components folder</h5>
+              <pre className="bg-slate-950 p-3 rounded text-[11px] text-slate-300 font-mono leading-relaxed">
+{`src/
+
+components/
+
+Search.jsx
+
+Counter.jsx
+
+Modal.jsx
+
+ThemeToggle.jsx`}
+              </pre>
+              <p className="text-xs text-slate-400 italic">Keep them empty.</p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 4</span>
+              <h5 className="text-sm font-bold text-white">Create Home Page</h5>
+              <p className="text-xs text-slate-400">Open <code>app/page.js</code> and write:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_4_CODE}</code>
+              </pre>
+              <p className="text-xs text-slate-400">Visit <code>localhost:3000</code> and see: <strong>User Directory</strong></p>
+              <div className="bg-slate-950/50 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 mt-1">
+                <strong className="text-white block mb-1">🧠 CONCEPT LEARNED</strong>
+                <pre className="font-mono text-cyan-300">Default Server Component</pre>
+                Because: <code className="font-mono bg-slate-900 px-1 text-white">No "use client"</code>
+              </div>
+            </div>
+
+            {/* Step 5 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 5</span>
+              <h5 className="text-sm font-bold text-white">Make page async</h5>
+              <p className="text-xs text-slate-400">Change:</p>
+              <pre className="bg-slate-950 p-2 rounded text-xs text-indigo-300 font-mono">export default function Page()</pre>
+              <p className="text-xs text-slate-400">to</p>
+              <pre className="bg-slate-950 p-2 rounded text-xs text-indigo-300 font-mono">export default async function Page()</pre>
+              <p className="text-xs text-slate-400">Nothing changes visually. But you've learned:</p>
+              <pre className="bg-slate-950 p-2.5 rounded text-[11px] text-cyan-300 font-mono">Async Server Component</pre>
+            </div>
+
+            {/* Step 6 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 6</span>
+              <h5 className="text-sm font-bold text-white">Fetch Users</h5>
+              <p className="text-xs text-slate-400">Inside the component body, invoke the fetch query:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_6_CODE}</code>
+              </pre>
+              <p className="text-xs text-slate-400">Check:</p>
+              <pre className="bg-slate-950 p-2 rounded text-xs text-slate-300 font-mono">console.log(users);</pre>
+              <p className="text-xs text-slate-400 font-semibold text-rose-400">Terminal. NOT browser.</p>
+              <div className="bg-slate-950/50 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 mt-1">
+                <strong className="text-white block mb-1">⚠️ Important observation:</strong>
+                <pre className="font-mono text-slate-300 leading-relaxed">
+{`Server Component
+
+↓
+
+Runs on server
+
+↓
+
+Logs appear in terminal`}
+                </pre>
+              </div>
+            </div>
+
+            {/* Step 7 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 7</span>
+              <h5 className="text-sm font-bold text-white">Display Users</h5>
+              <p className="text-xs text-slate-400">Render user directory list:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_7_CODE}</code>
+              </pre>
+              <p className="text-xs text-slate-400">Display:</p>
+              <pre className="bg-slate-950 p-2 rounded text-xs text-slate-400 font-mono leading-relaxed">
+{`Leanne Graham
+
+Ervin Howell
+
+...`}
+              </pre>
+              <div className="bg-slate-950/50 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 mt-1">
+                <strong className="text-white block mb-1">🧠 CONCEPT</strong>
+                <pre className="font-mono text-cyan-300">Server Data Fetching</pre>
+                You've already learned: <code>async</code>, <code>await</code>, <code>fetch</code>, <code>Server Rendering</code>.
+              </div>
+              <div className="bg-indigo-950/35 border border-indigo-900/40 p-3 rounded-lg text-xs text-indigo-300 font-bold text-center mt-2">
+                🛑 STOP HERE: At this point you've finished: Default Server Component, Async Component, Server Data Fetching.
+              </div>
+            </div>
+
+            {/* Step 8 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 8</span>
+              <h5 className="text-sm font-bold text-white">Create Search Component</h5>
+              <p className="text-xs text-slate-400">Open <code>Search.jsx</code>:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_8_CODE}</code>
+              </pre>
+              <div className="bg-slate-950/50 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 mt-1">
+                <strong className="text-white block mb-1">🧠 CONCEPT</strong>
+                You've created your first Client Component.
+              </div>
+            </div>
+
+            {/* Step 9 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 9</span>
+              <h5 className="text-sm font-bold text-white">Pass users</h5>
+              <p className="text-xs text-slate-400">Pass props across the rendering environment boundary:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto">
+                <code>{STEP_9_CODE}</code>
+              </pre>
+              <div className="bg-slate-950/50 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 mt-1">
+                <strong className="text-white block mb-1">🧠 CONCEPT</strong>
+                <pre className="font-mono text-cyan-300">Server &rarr; Props &rarr; Client</pre>
+              </div>
+            </div>
+
+            {/* Step 10 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 10</span>
+              <h5 className="text-sm font-bold text-white">useState inside Search</h5>
+              <p className="text-xs text-slate-400 font-mono">Create useState for search text:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_10_CODE}</code>
+              </pre>
+              <p className="text-xs text-slate-400">UI Layout:</p>
+              <pre className="bg-slate-950 p-2.5 rounded text-[11px] text-slate-400 font-mono leading-relaxed">
+{`Search:
+
+_________`}
+              </pre>
+            </div>
+
+            {/* Step 11 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 11</span>
+              <h5 className="text-sm font-bold text-white">Handle typing</h5>
+              <p className="text-xs text-slate-400 font-mono">onChange updates state:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_11_CODE}</code>
+              </pre>
+            </div>
+
+            {/* Step 12 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 12</span>
+              <h5 className="text-sm font-bold text-white">Filter users</h5>
+              <p className="text-xs text-slate-400 font-mono">users.filter(...)</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_12_CODE}</code>
+              </pre>
+              <p className="text-xs text-slate-400">Result typing <code>"lea"</code> shows <strong>Leanne Graham</strong>.</p>
+              <div className="bg-slate-950/50 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 mt-1">
+                <strong className="text-white block mb-1">🧠 CONCEPTS LEARNED</strong>
+                <pre className="font-mono text-cyan-300">Client Component, Props, useState, Event Handler, Filtering</pre>
+              </div>
+            </div>
+
+            {/* Step 13 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 13</span>
+              <h5 className="text-sm font-bold text-white">Create Counter</h5>
+              <p className="text-xs text-slate-400">Counter.jsx with useState:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_13_CODE}</code>
+              </pre>
+              <div className="bg-slate-950/50 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 mt-1">
+                <strong className="text-white block mb-1">🧠 CONCEPT</strong>
+                Interactive Client Component.
+              </div>
+            </div>
+
+            {/* Step 14 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 14</span>
+              <h5 className="text-sm font-bold text-white">Add Counter to Page</h5>
+              <p className="text-xs text-slate-400">Nesting Client Component inside Server Component:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_14_CODE}</code>
+              </pre>
+            </div>
+
+            {/* Step 15 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 15</span>
+              <h5 className="text-sm font-bold text-white">Create Modal</h5>
+              <p className="text-xs text-slate-400">Toggling state triggers visibility conditionally:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_15_CODE}</code>
+              </pre>
+              <div className="bg-slate-950/50 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 mt-1">
+                <strong className="text-white block mb-1">🧠 LEARN</strong>
+                Conditional Rendering, State, Event Handlers.
+              </div>
+            </div>
+
+            {/* Step 16 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 16</span>
+              <h5 className="text-sm font-bold text-white">Theme Toggle</h5>
+              <p className="text-xs text-slate-400">ThemeToggle.jsx State and Storage:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_16_CODE}</code>
+              </pre>
+              <div className="bg-slate-950/50 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 mt-1">
+                <strong className="text-white block mb-1">🧠 LEARN</strong>
+                Browser APIs, localStorage, useEffect.
+              </div>
+            </div>
+
+            {/* Step 17 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 17</span>
+              <h5 className="text-sm font-bold text-white">useEffect</h5>
+              <p className="text-xs text-slate-400">Read local theme value after client-side mounting:</p>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_17_CODE}</code>
+              </pre>
+              <div className="bg-slate-950/50 border border-slate-850 p-3 rounded-lg text-xs text-slate-400 mt-1">
+                <strong className="text-white block mb-1">🧠 LEARN</strong>
+                Component Mounting, Side Effects.
+              </div>
+            </div>
+
+            {/* Step 18 */}
+            <div className="border-l-2 border-indigo-500 pl-4 flex flex-col gap-2">
+              <span className="text-xs font-mono font-bold text-indigo-400 uppercase">STEP 18</span>
+              <h5 className="text-sm font-bold text-white">Final Layout Assembly</h5>
+              <pre className="bg-slate-950 p-3.5 rounded text-[11.5px] text-indigo-300 font-mono overflow-x-auto leading-relaxed">
+                <code>{STEP_18_CODE}</code>
+              </pre>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Curriculum Table */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mb-8">
+          <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">📋 What You'll Learn at Each Step</h4>
+          <div className="cs-grid border border-slate-850 rounded-lg overflow-hidden">
+            <div className="cs-row bg-slate-950 font-bold border-b border-slate-850 text-white">
+              <div className="cs-k font-bold">Step</div>
+              <div className="cs-v font-bold">Topic Covered</div>
+            </div>
+            {[
+              { k: '1', v: 'Project Setup' },
+              { k: '2', v: 'App Structure' },
+              { k: '3', v: 'Components Folder' },
+              { k: '4', v: 'Default Server Component' },
+              { k: '5', v: 'Async Server Component' },
+              { k: '6', v: 'Server Data Fetching' },
+              { k: '7', v: 'Rendering Server Data' },
+              { k: '8', v: '"use client"' },
+              { k: '9', v: 'Passing Props' },
+              { k: '10', v: 'useState' },
+              { k: '11', v: 'Event Handlers' },
+              { k: '12', v: 'Filtering' },
+              { k: '13', v: 'Counter' },
+              { k: '14', v: 'Component Composition' },
+              { k: '15', v: 'Modal' },
+              { k: '16', v: 'Browser APIs' },
+              { k: '17', v: 'useEffect' },
+              { k: '18', v: 'Complete Application' }
+            ].map((row) => (
+              <div key={row.k} className="cs-row border-b border-slate-850 last:border-0 hover:bg-slate-950/20">
+                <div className="cs-k text-indigo-400 font-mono">{row.k}</div>
+                <div className="cs-v text-slate-300">{row.v}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recommendation Progression Callout */}
+        <div className="bg-indigo-950/25 border border-indigo-900/40 rounded-xl p-5">
+          <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">🚀 My recommendation for how we proceed</h4>
+          <p className="text-xs text-slate-300 leading-relaxed mb-3">
+            Don't build the whole thing at once. Treat this like a guided Next.js course.
+          </p>
+          <div className="bg-slate-950/80 p-4 border border-slate-900 rounded-lg flex flex-col gap-2.5">
+            <span className="text-xs font-bold text-white block">📚 Lesson 1 (today):</span>
+            <ul className="list-disc pl-4 text-xs text-slate-400 flex flex-col gap-1.5 leading-relaxed">
+              <li>Project setup</li>
+              <li>Understand the folder structure</li>
+              <li>Build <code>app/page.js</code></li>
+              <li>Convert it to an async Server Component</li>
+              <li>Fetch users from the API</li>
+              <li>Render the user list</li>
+              <li>Understand why the logs appear in the terminal instead of the browser</li>
+            </ul>
+            <span className="text-[11px] text-slate-500 font-mono mt-1 block leading-normal">
+              After Lesson 1, we'll review what happened, discuss the underlying Next.js concepts, and then move to <strong>Lesson 2: creating the first Client Component (Search.jsx) and passing data from the Server Component to it</strong>. This progression mirrors how modern Next.js applications are actually built.
+            </span>
+          </div>
+        </div>
+
       </section>
 
       <div className="divider" />
