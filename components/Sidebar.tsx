@@ -51,6 +51,21 @@ export default function Sidebar() {
             <span className="nav-badge">Level 1</span>
           </a>
         </div>
+
+        <div className="nav-group">
+          <div className="nav-group-label">Part 4 · Rendering System (Level 2)</div>
+          <a className="nav-item" href="#rendering-system-level2"><span className="nav-icon">🎓</span> Level 2 Overview</a>
+          <a className="nav-item" href="#rendering-m1"><span className="nav-icon">🌍</span> 1. What is Rendering?</a>
+          <a className="nav-item" href="#server-m2"><span className="nav-icon">🖥️</span> 2-6. Server Components</a>
+          <a className="nav-item" href="#client-m3"><span className="nav-icon">💻</span> 7-12. Client Components</a>
+          <a className="nav-item" href="#combining-m4"><span className="nav-icon">⚖️</span> 13-15. Combining Systems</a>
+          <a className="nav-item" href="#decision-m5"><span className="nav-icon">🔍</span> 16-17. Choosing Components</a>
+          <a className="nav-item" href="#project-m6"><span className="nav-icon">👤</span> 18. User Directory Project</a>
+          <a className="nav-item" href="#mastery-checklist-level2">
+            <span className="nav-icon">✓</span> Mastery Checklist
+            <span className="nav-badge">Level 2</span>
+          </a>
+        </div>
       </aside>
     </>
   )

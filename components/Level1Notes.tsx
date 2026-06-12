@@ -18,26 +18,31 @@ const CHECKLIST_ITEMS = [
 
 export default function Level1Notes() {
   // --- Checklist State ---
-  const [checkedItems, setCheckedItems] = useState<boolean[]>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('nextjs_level1_checklist')
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved)
-          if (Array.isArray(parsed) && parsed.length === CHECKLIST_ITEMS.length) {
-            return parsed
-          }
-        } catch {
-          // ignore
-        }
-      }
-    }
-    return new Array(CHECKLIST_ITEMS.length).fill(false)
-  })
+  const [checkedItems, setCheckedItems] = useState<boolean[]>(() =>
+    new Array(CHECKLIST_ITEMS.length).fill(false)
+  )
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    localStorage.setItem('nextjs_level1_checklist', JSON.stringify(checkedItems))
-  }, [checkedItems])
+    const saved = localStorage.getItem('nextjs_level1_checklist')
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved)
+        if (Array.isArray(parsed) && parsed.length === CHECKLIST_ITEMS.length) {
+          setCheckedItems(parsed)
+        }
+      } catch {
+        // ignore
+      }
+    }
+    setIsLoaded(true)
+  }, [])
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('nextjs_level1_checklist', JSON.stringify(checkedItems))
+    }
+  }, [checkedItems, isLoaded])
 
   const toggleCheck = (index: number) => {
     const updated = [...checkedItems]

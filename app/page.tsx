@@ -8,6 +8,7 @@ import RenderingEnvironments from '@/components/RenderingEnvironments'
 import ClientSideRendering from '@/components/ClientSideRendering'
 import ServerSideRendering from '@/components/ServerSideRendering'
 import Level1Notes from '@/components/Level1Notes'
+import Level2Notes from '@/components/Level2Notes'
 
 
 
@@ -150,6 +151,11 @@ export default function HomePage() {
             PART 3 — LEVEL 1 APP ROUTER
         ══════════════════════════════════════ */}
         <Level1Notes />
+
+        {/* ══════════════════════════════════════
+            PART 4 — LEVEL 2 RENDERING SYSTEM
+        ══════════════════════════════════════ */}
+        <Level2Notes />
 
         {/* Cheatsheet */}
         <section className="section cheatsheet fi" id="cheatsheet" aria-label="Quick cheatsheet">

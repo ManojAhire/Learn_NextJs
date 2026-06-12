@@ -1,20 +1,10 @@
 import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import Sidebar from '@/components/Sidebar'
 import ProgressBar from '@/components/ProgressBar'
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-})
+const inter = { variable: '' }
+const jetbrainsMono = { variable: '' }
 
 const SITE_URL = 'https://nextjs-notes-hazel.vercel.app'
 const SITE_NAME = 'NextJS Notes'
