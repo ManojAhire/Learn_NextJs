@@ -230,20 +230,6 @@ export default function Level2Notes() {
     new Array(SYLLABUS_CHECKLIST.length).fill(false)
   )
   const [isLoaded, setIsLoaded] = useState(false)
-  const [selectedFile, setSelectedFile] = useState<string>('src/app/page.js')
-
-  const getFileContent = (file: string) => {
-    switch (file) {
-      case 'src/app/layout.js': return LAYOUT_JS;
-      case 'src/app/globals.css': return GLOBALS_CSS;
-      case 'src/app/page.js': return PAGE_JS;
-      case 'src/components/Search.jsx': return SEARCH_JSX;
-      case 'src/components/Counter.jsx': return COUNTER_JSX;
-      case 'src/components/Modal.jsx': return MODAL_JSX;
-      case 'src/components/ThemeToggle.jsx': return THEME_TOGGLE_JSX;
-      default: return PAGE_JS;
-    }
-  };
 
   useEffect(() => {
     const saved = localStorage.getItem('nextjs_level2_checklist')
@@ -1123,113 +1109,97 @@ export default function ClientWrapper({ children }) {
       {/* ── MODULE 6: PRACTICAL PROJECT ── */}
       <section className="section fi vis" id="project-m6" aria-label="Module 6: Practical Project">
         <div className="sec-num">Module 6 · Practical Project</div>
-
-        <div className="bg-gradient-to-r from-purple-950/20 to-cyan-950/20 border border-purple-900/30 rounded-xl p-5 mb-6">
-          <p className="text-xs md:text-sm text-slate-200 font-medium leading-relaxed">
-            Absolutely. In fact, I think this is a much better approach than reading notes for weeks.<br />
-            For <strong>Level 2</strong>, we'll build one project that gradually introduces every concept.
-          </p>
-        </div>
-
-        <h2 className="sec-title text-2xl font-bold text-white mb-2">Project Builder: User Directory</h2>
-        <p className="text-xs text-slate-400 mb-6">
-          Click any file in the directory structure below to load its helper code snippet and examine its logic:
+        <h2 className="sec-title">12. User Directory Project Structure</h2>
+        <p className="sec-sub">
+          Below is the finalized file hierarchy and visual components map for our Level 2 user directory application, integrating Server and Client components.
         </p>
 
-        {/* Directory Explorer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch mb-8">
-          
-          {/* Left Column: Interactive File Tree */}
-          <div className="md:col-span-4 bg-slate-950/60 border border-slate-850 rounded-xl p-4 flex flex-col justify-start">
-            <span className="text-[10px] font-mono text-slate-500 font-bold block mb-3 uppercase tracking-wider">Project Directory</span>
-            
-            <div className="flex flex-col gap-2 font-mono text-xs select-none">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mt-4">
+          {/* File Structure Tree */}
+          <div className="md:col-span-6">
+            <div className="file-tree">
+              <div className="ft-head font-bold font-mono">📁 user-directory/src/</div>
               
-              {/* src/ */}
-              <div className="flex items-center gap-2 text-slate-400 font-semibold">
-                <span>📁</span> <span>src</span>
+              <div className="ft-line pointer-events-none">
+                <span className="ft-icon">📁</span>
+                <span className="ft-name ft-folder font-bold">app/</span>
               </div>
-
-              {/* src/app/ */}
-              <div className="pl-4 flex flex-col gap-2">
-                <div className="flex items-center gap-2 text-slate-400 font-semibold">
-                  <span>📁</span> <span>app</span>
+              <div className="ft-indent">
+                <div className="ft-line pointer-events-none">
+                  <span className="ft-icon">📄</span>
+                  <span className="ft-name ft-special">layout.js</span>
                 </div>
-                
-                {/* App Files */}
-                <div className="pl-4 flex flex-col gap-1">
-                  {[
-                    { path: 'src/app/layout.js', name: 'layout.js' },
-                    { path: 'src/app/globals.css', name: 'globals.css' },
-                    { path: 'src/app/page.js', name: 'page.js' }
-                  ].map((file) => (
-                    <button
-                      key={file.path}
-                      onClick={() => setSelectedFile(file.path)}
-                      className={`flex items-center gap-2 px-2 py-1 rounded text-left transition ${selectedFile === file.path ? 'bg-indigo-500/10 text-indigo-300 font-bold border border-indigo-500/20' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/40 border border-transparent'}`}
-                    >
-                      <span>📄</span> <span>{file.name}</span>
-                    </button>
-                  ))}
+                <div className="ft-line pointer-events-none">
+                  <span className="ft-icon">📄</span>
+                  <span className="ft-name ft-special">globals.css</span>
+                </div>
+                <div className="ft-line pointer-events-none">
+                  <span className="ft-icon">📄</span>
+                  <span className="ft-name ft-route">page.js</span>
                 </div>
               </div>
 
-              {/* src/components/ */}
-              <div className="pl-4 flex flex-col gap-2 mt-1">
-                <div className="flex items-center gap-2 text-slate-400 font-semibold">
-                  <span>📁</span> <span>components</span>
+              <div className="ft-line pointer-events-none">
+                <span className="ft-icon">📁</span>
+                <span className="ft-name ft-folder font-bold">components/</span>
+              </div>
+              <div className="ft-indent">
+                <div className="ft-line pointer-events-none">
+                  <span className="ft-icon">📄</span>
+                  <span className="ft-name">Search.jsx</span>
                 </div>
-                
-                {/* Component Files */}
-                <div className="pl-4 flex flex-col gap-1">
-                  {[
-                    { path: 'src/components/Search.jsx', name: 'Search.jsx' },
-                    { path: 'src/components/Counter.jsx', name: 'Counter.jsx' },
-                    { path: 'src/components/Modal.jsx', name: 'Modal.jsx' },
-                    { path: 'src/components/ThemeToggle.jsx', name: 'ThemeToggle.jsx' }
-                  ].map((file) => (
-                    <button
-                      key={file.path}
-                      onClick={() => setSelectedFile(file.path)}
-                      className={`flex items-center gap-2 px-2 py-1 rounded text-left transition ${selectedFile === file.path ? 'bg-indigo-500/10 text-indigo-300 font-bold border border-indigo-500/20' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/40 border border-transparent'}`}
-                    >
-                      <span>📄</span> <span>{file.name}</span>
-                    </button>
-                  ))}
+                <div className="ft-line pointer-events-none">
+                  <span className="ft-icon">📄</span>
+                  <span className="ft-name">Counter.jsx</span>
+                </div>
+                <div className="ft-line pointer-events-none">
+                  <span className="ft-icon">📄</span>
+                  <span className="ft-name">Modal.jsx</span>
+                </div>
+                <div className="ft-line pointer-events-none">
+                  <span className="ft-icon">📄</span>
+                  <span className="ft-name">ThemeToggle.jsx</span>
                 </div>
               </div>
-
             </div>
           </div>
 
-          {/* Right Column: Code Viewer */}
-          <div className="md:col-span-8 flex flex-col">
-            <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col flex-1">
-              <div className="bg-slate-950 px-4 py-2 border-b border-slate-850 flex justify-between items-center">
-                <span className="text-[10px] font-mono text-indigo-400 font-bold">{selectedFile}</span>
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(getFileContent(selectedFile));
-                    alert('Helper code copied to clipboard!');
-                  }}
-                  className="text-[10px] bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-400 px-2 py-1 rounded transition hover:text-white"
-                >
-                  Copy Code
-                </button>
+          {/* Component Mapping */}
+          <div className="md:col-span-6 flex flex-col justify-between">
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex-1">
+              <h4 className="text-sm font-bold text-white mb-3">📍 Application Components Map</h4>
+              <div className="flex flex-col gap-2 font-mono text-[11px]">
+                {[
+                  { file: 'app/layout.js', desc: '🧱 Root html/body layout wrapper' },
+                  { file: 'app/globals.css', desc: '🎨 Global styling & Tailwind configs' },
+                  { file: 'app/page.js', desc: '🖥️ Server Page (fetches user records)' },
+                  { file: 'components/Search.jsx', desc: '💻 Client query search input & lists' },
+                  { file: 'components/Counter.jsx', desc: '💻 Client stateful increase widget' },
+                  { file: 'components/Modal.jsx', desc: '💻 Client conditional overlay window' },
+                  { file: 'components/ThemeToggle.jsx', desc: '💻 Client theme local storage switcher' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex justify-between border-b border-slate-900 py-1.5 last:border-b-0">
+                    <span className="text-cyan-400 font-bold">{item.file}</span>
+                    <span className="text-slate-400 text-right">{item.desc}</span>
+                  </div>
+                ))}
               </div>
-              <pre className="bg-slate-950/40 p-4 text-[11.5px] font-mono text-slate-300 overflow-x-auto leading-relaxed flex-1 m-0">
-                <code>{getFileContent(selectedFile)}</code>
-              </pre>
+            </div>
+
+            <div className="rule-box mt-3">
+              <span className="text-base">💡</span>
+              <p className="text-xs text-slate-300">
+                Data fetches securely on the <strong>Server Component</strong> (<code>page.js</code>) and flows down via serializable props to the interactive <strong>Client Components</strong>.
+              </p>
             </div>
           </div>
-
         </div>
 
-        {/* Nearly Expected Sketch of Website Layout */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mb-6">
+        {/* Website Mockup Sketch */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 mt-6">
           <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-2">🖥️ Nearly Expected Website Sketch</h4>
           <p className="text-xs text-slate-400 mb-4">
-            The finished application combines server data fetching with client search inputs, counters, modal overlays, and theme toggles in a single page layout:
+            The final application layout renders the dynamic search filter and active widgets sequentially:
           </p>
           <pre className="bg-slate-950 border border-slate-850 rounded-lg p-4 font-mono text-xs text-cyan-300 leading-relaxed overflow-x-auto">
 {`--------------------------------
@@ -1266,8 +1236,8 @@ Dark Mode Toggle
           </pre>
         </div>
 
-        {/* Learning Progression Callout */}
-        <div className="bg-indigo-950/20 border border-indigo-900/40 rounded-xl p-5">
+        {/* Progression callout */}
+        <div className="bg-indigo-950/20 border border-indigo-900/40 rounded-xl p-5 mt-6 font-mono text-xs">
           <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">🚀 My recommendation for how we proceed</h4>
           <p className="text-xs text-slate-300 leading-relaxed mb-3">
             Don't build the whole thing at once. Treat this like a guided Next.js course.
@@ -1288,7 +1258,6 @@ Dark Mode Toggle
             </span>
           </div>
         </div>
-
       </section>
 
       <div className="divider" />
